@@ -1,0 +1,15 @@
+# Maven
+**/target/**
+
+# OSX
+.DS_Store
+
+# Xcode
+*.mode1v3
+*.pbxuser
+*.xcworkspace
+xcuserdata
+
+# Eclipse
+.project
+.settings

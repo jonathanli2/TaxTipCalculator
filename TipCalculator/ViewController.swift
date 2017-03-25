@@ -31,16 +31,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var perPersonAmount: UILabel!
     
     @IBOutlet weak var inputTextField: UITextField!
-    
-  /*   override func viewWillAppear(animated: Bool) {
-    
-    super.viewWillAppear(true);
-    UIApplication.sharedApplication().statusBarHidden=true; // for status bar hide
 
-}*/
+    @IBAction func onResetClicked(_ sender: Any) {
+        taxStep.value = 13;
+        tipStep.value = 13;
+        splitByStep.value = 1
+
+        inputTextField.text = ""
+        refreshAll(self)
+    
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad();
-        UIApplication.sharedApplication().statusBarHidden = true
+        UIApplication.shared.isStatusBarHidden = true
         inputTextField.becomeFirstResponder()
 
         // Do any additional setup after loading the view, typically from a nib.
@@ -52,20 +56,20 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func onStepChanged(sender: AnyObject) {
+    @IBAction func onStepChanged(_ sender: AnyObject) {
         refreshAll(sender)
     }
     
-    func formatAsCurrency(number: NSNumber) -> String {
-                return NSNumberFormatter.localizedStringFromNumber(
-                    number, numberStyle: NSNumberFormatterStyle.CurrencyStyle)
+    func formatAsCurrency(_ number: NSNumber) -> String {
+                return NumberFormatter.localizedString(
+                    from: number, number: NumberFormatter.Style.currency)
     }
     
-    @IBAction func billAmountChanged(sender: AnyObject) {
+    @IBAction func billAmountChanged(_ sender: AnyObject) {
         refreshAll(sender)
     }
     
-    func refreshAll(sender: AnyObject){
+    func refreshAll(_ sender: AnyObject){
         //update input amount
             let tax = Int(taxStep.value)
             taxPercent.text = String(format: "Tax at %d%@", tax, "%");
@@ -81,7 +85,7 @@ class ViewController: UIViewController {
             billAmountValue = NSDecimalNumber(string:inputTextField.text).floatValue/100.0
         }
 
-        billAmount.text =  formatAsCurrency(billAmountValue);
+        billAmount.text =  formatAsCurrency(NSNumber(value: billAmountValue));
 
     
         //recalculate the amount
@@ -98,10 +102,10 @@ class ViewController: UIViewController {
         let perPersonAmount = sum / Float(splitByNumberValue);
         
         //update ui with new amount
-        self.tipAmount.text =  formatAsCurrency(tipAmount)
-        self.taxAmount.text = formatAsCurrency(taxAmount)
-        totalAmount.text = formatAsCurrency(sum)
-        self.perPersonAmount.text = formatAsCurrency(perPersonAmount)
+        self.tipAmount.text =  formatAsCurrency(NSNumber(value: tipAmount))
+        self.taxAmount.text = formatAsCurrency(NSNumber(value: taxAmount))
+        totalAmount.text = formatAsCurrency(NSNumber(value: sum))
+        self.perPersonAmount.text = formatAsCurrency(NSNumber(value: perPersonAmount))
         
     }
 }
